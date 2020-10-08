@@ -113,7 +113,6 @@ contract yVault is ERC20, ERC20Detailed {
                 r = b.add(_diff);
             }
         }
-
         token.safeTransfer(msg.sender, r);
     }
 
