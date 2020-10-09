@@ -1,0 +1,27 @@
+{
+  "contracts": {
+    "BTCOSMedianizer": "763fd8c4f8302288a80bf6ef38b861dbf2086f8c",
+    "Controller": "cc876920be585f747891b0fd8092642a9e1e0c6b",
+    "CurveYCRVVoter": "5e8421f9f0bbba1c9137c842c73ad41cd5f9fd6e",
+    "ETHOSMedianizer": "735e683e5f5a513edd450fe596c18484c938d276",
+    "StrategyCreamYFI": "6f61ae1aa9f88432a96f0aff01e046700ef4aa75",
+    "StrategyCurveBTCVoterProxy": "46828e146f5c768c0d6ce369f6881a42b15f3eb5",
+    "StrategyCurveYBUSDVoterProxy": "cf3bcba0f926a36331312cb3933c7277e697fe95",
+    "StrategyCurveYVoterProxy": "4be5c268ce6c425e65cc1dc133bdcaeb277312e8",
+    "StrategyDAICurve": "8f0fce8c136be73dcaad2c86798a2cb5882b4579",
+    "StrategyDForceUSDC": "1a768ae9a00ce4164471662a0aec13e0a1dd1757",
+    "StrategyDForceUSDT": "2faaa33bcdac189f108ee5c83d782a7f8592c938",
+    "StrategyMKRVaultDAIDelegate": "f13c578a62185132f7609bd47bae18396fae11bc",
+    "StrategyProxy": "1c7e9d797cdae52119e2123ff5441b68daa10521",
+    "StrategyTUSDCurve": "0173421204b045b79cfca18d73fbad66a0df23a6",
+    "StrategyVaultUSDC": "1ea0e635b8093885d5a3d6418c61b87a334e4ac9",
+    "StrategyYFIGovernance": "abaeeb8fdf7d9996341ae97275e5fefbdfbce808",
+    "Token": "8d35362487586047775540df4f49f02d7e5261ac",
+    "YRegistry": "926a6816e69998a855da6df709ec9a84608372bc",
+    "yDelegatedVault": "71e2d7cff9b8b4324c9c543d233acd10671eb98f",
+    "yVault": "cf3d126f83618312c5ced81b0b630d332b45b31a",
+    "yWETH": "a69825bde5838885d51ceaf35471ffd574605fd9"
+  },
+  "tests": {},
+  "tx": {}
+}

@@ -1,0 +1,22 @@
+{
+  "abi": [
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "mint",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "contractName": "Mintr",
+  "sha1": "21fa872ac3fb68eda76ab98831381f950b13f347",
+  "type": "interface"
+}

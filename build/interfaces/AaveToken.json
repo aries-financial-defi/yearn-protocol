@@ -1,0 +1,22 @@
+{
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "underlyingAssetAddress",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "contractName": "AaveToken",
+  "sha1": "7b8cae5d7f2f2368e5969bc4b2192392be9fb3f4",
+  "type": "interface"
+}
