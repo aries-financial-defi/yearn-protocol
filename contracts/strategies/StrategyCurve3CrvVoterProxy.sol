@@ -1,9 +1,9 @@
 pragma solidity ^0.5.17;
 
-import "@openzeppelinV2/contracts/token/ERC20/IERC20.sol";
+/*import "@openzeppelinV2/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelinV2/contracts/math/SafeMath.sol";
 import "@openzeppelinV2/contracts/utils/Address.sol";
-import "@openzeppelinV2/contracts/token/ERC20/SafeERC20.sol";
+import "@openzeppelinV2/contracts/token/ERC20yERC20/SafeERC20.sol";
 
 import "../../interfaces/yearn/IController.sol";
 import "../../interfaces/curve/Gauge.sol";
@@ -12,6 +12,113 @@ import "../../interfaces/uniswap/Uni.sol";
 import "../../interfaces/curve/Curve.sol";
 import "../../interfaces/yearn/IToken.sol";
 import "../../interfaces/yearn/IVoterProxy.sol";
+
+
+*/
+
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v2.5.0/contracts/token/ERC20/IERC20.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v2.5.0/contracts/math/SafeMath.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v2.5.0/contracts/utils/Address.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v2.5.0/contracts/token/ERC20/SafeERC20.sol";
+
+interface IController {
+    function withdraw(address, uint256) external;
+
+    function balanceOf(address) external view returns (uint256);
+
+    function earn(address, uint256) external;
+
+    function want(address) external view returns (address);
+
+    function rewards() external view returns (address);
+
+    function vaults(address) external view returns (address);
+
+    function strategies(address) external view returns (address);
+}
+
+interface yERC20 {
+    function deposit(uint256 _amount) external;
+
+    function withdraw(uint256 _amount) external;
+
+    function getPricePerFullShare() external view returns (uint256);
+}
+
+interface IVoterProxy {
+    function withdraw(
+        address _gauge,
+        address _token,
+        uint256 _amount
+    ) external returns (uint256);
+
+    function balanceOf(address _gauge) external view returns (uint256);
+
+    function withdrawAll(address _gauge, address _token) external returns (uint256);
+
+    function deposit(address _gauge, address _token) external;
+
+    function harvest(address _gauge) external;
+
+    function lock() external;
+}
+
+interface Gauge {
+    function deposit(uint256) external;
+
+    function balanceOf(address) external view returns (uint256);
+
+    function withdraw(uint256) external;
+}
+
+interface Mintr {
+    function mint(address) external;
+}
+
+interface ICurveFi {
+    function get_virtual_price() external view returns (uint256);
+
+    function add_liquidity(
+        // sBTC pool
+        uint256[3] calldata amounts,
+        uint256 min_mint_amount
+    ) external;
+
+    function add_liquidity(
+        // bUSD pool
+        uint256[4] calldata amounts,
+        uint256 min_mint_amount
+    ) external;
+
+    function remove_liquidity_imbalance(uint256[4] calldata amounts, uint256 max_burn_amount) external;
+
+    function remove_liquidity(uint256 _amount, uint256[4] calldata amounts) external;
+
+    function exchange(
+        int128 from,
+        int128 to,
+        uint256 _from_amount,
+        uint256 _min_to_amount
+    ) external;
+}
+
+interface Zap {
+    function remove_liquidity_one_coin(
+        uint256,
+        int128,
+        uint256
+    ) external;
+}
+
+interface Uni {
+    function swapExactTokensForTokens(
+        uint256,
+        uint256,
+        address[] calldata,
+        address,
+        uint256
+    ) external;
+}
 
 contract StrategyCurve3CrvVoterProxy {
     using SafeERC20 for IERC20;

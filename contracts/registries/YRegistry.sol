@@ -2,6 +2,7 @@
 
 pragma solidity ^0.5.17;
 
+/*
 import "@openzeppelinV2/contracts/math/SafeMath.sol";
 import "@openzeppelinV2/contracts/utils/Address.sol";
 import "@openzeppelinV2/contracts/utils/EnumerableSet.sol";
@@ -10,6 +11,79 @@ import "../../interfaces/yearn/IController.sol";
 import "../../interfaces/yearn/IStrategy.sol";
 import "../../interfaces/yearn/IVault.sol";
 import "../../interfaces/yearn/IWrappedVault.sol";
+*/
+
+
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v2.5.0/contracts/math/SafeMath.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v2.5.0/contracts/utils/Address.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v2.5.0/contracts/utils/EnumerableSet.sol";
+
+
+interface IController {
+    function withdraw(address, uint256) external;
+
+    function balanceOf(address) external view returns (uint256);
+
+    function earn(address, uint256) external;
+
+    function want(address) external view returns (address);
+
+    function rewards() external view returns (address);
+
+    function vaults(address) external view returns (address);
+
+    function strategies(address) external view returns (address);
+}
+
+interface IStrategy {
+    function want() external view returns (address);
+
+    function deposit() external;
+
+    function withdraw(address) external;
+
+    function withdraw(uint256) external;
+
+    function skim() external;
+
+    function withdrawAll() external returns (uint256);
+
+    function balanceOf() external view returns (uint256);
+}
+
+interface IVault {
+    function token() external view returns (address);
+
+    function underlying() external view returns (address);
+
+    function name() external view returns (string memory);
+
+    function symbol() external view returns (string memory);
+
+    function decimals() external view returns (uint8);
+
+    function controller() external view returns (address);
+
+    function governance() external view returns (address);
+
+    function getPricePerFullShare() external view returns (uint256);
+}
+
+interface IWrappedVault {
+    function token() external view returns (address);
+
+    function name() external view returns (string memory);
+
+    function symbol() external view returns (string memory);
+
+    function decimals() external view returns (uint8);
+
+    function governance() external view returns (address);
+
+    function vault() external view returns (address);
+
+    function getPricePerFullShare() external view returns (uint256);
+}
 
 contract YRegistry {
     using Address for address;

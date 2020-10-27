@@ -2,6 +2,8 @@
 
 pragma solidity ^0.5.17;
 
+
+/*
 import "@openzeppelinV2/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelinV2/contracts/math/SafeMath.sol";
 import "@openzeppelinV2/contracts/utils/Address.sol";
@@ -9,13 +11,34 @@ import "@openzeppelinV2/contracts/token/ERC20/SafeERC20.sol";
 
 import "../../interfaces/yearn/Proxy.sol";
 import "../../interfaces/curve/Mintr.sol";
+*/
+
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v2.5.0/contracts/token/ERC20/IERC20.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v2.5.0/contracts/math/SafeMath.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v2.5.0/contracts/utils/Address.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v2.5.0/contracts/token/ERC20/SafeERC20.sol";
+
+interface Proxy {
+    function execute(
+        address to,
+        uint256 value,
+        bytes calldata data
+    ) external returns (bool, bytes memory);
+
+    function increaseAmount(uint256) external;
+}
+
+interface Mintr {
+    function mint(address) external;
+}
+
 
 contract StrategyProxy {
     using SafeERC20 for IERC20;
     using Address for address;
     using SafeMath for uint256;
 
-    Proxy public constant proxy = Proxy(0xF147b8125d2ef93FB6965Db97D6746952a133934);
+    Proxy public constant proxy = Proxy(0x07443C1cdb3653746727D595D2c1e5B438e0535A);
     address public constant mintr = address(0xd061D61a4d941c39E5453435B6345Dc261C2fcE0);
     address public constant crv = address(0xD533a949740bb3306d119CC777fa900bA034cd52);
     address public constant gauge = address(0x2F50D538606Fa9EDD2B11E2446BEb18C9D5846bB);

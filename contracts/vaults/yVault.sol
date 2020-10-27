@@ -1,6 +1,6 @@
 pragma solidity ^0.5.16;
 
-import "@openzeppelinV2/contracts/token/ERC20/IERC20.sol";
+/*import "@openzeppelinV2/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelinV2/contracts/math/SafeMath.sol";
 import "@openzeppelinV2/contracts/utils/Address.sol";
 import "@openzeppelinV2/contracts/token/ERC20/SafeERC20.sol";
@@ -9,6 +9,33 @@ import "@openzeppelinV2/contracts/token/ERC20/ERC20Detailed.sol";
 import "@openzeppelinV2/contracts/ownership/Ownable.sol";
 
 import "../../interfaces/yearn/IController.sol";
+*/
+
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v2.5.0/contracts/token/ERC20/IERC20.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v2.5.0/contracts/math/SafeMath.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v2.5.0/contracts/utils/Address.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v2.5.0/contracts/token/ERC20/SafeERC20.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v2.5.0/contracts/token/ERC20/ERC20.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v2.5.0/contracts/token/ERC20/ERC20Detailed.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v2.5.0/contracts/ownership/Ownable.sol";
+
+
+interface IController {
+    function withdraw(address, uint256) external;
+
+    function balanceOf(address) external view returns (uint256);
+
+    function earn(address, uint256) external;
+
+    function want(address) external view returns (address);
+
+    function rewards() external view returns (address);
+
+    function vaults(address) external view returns (address);
+
+    function strategies(address) external view returns (address);
+}
+
 
 contract yVault is ERC20, ERC20Detailed {
     using SafeERC20 for IERC20;

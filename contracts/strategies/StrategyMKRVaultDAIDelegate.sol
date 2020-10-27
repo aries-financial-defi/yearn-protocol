@@ -1,6 +1,6 @@
 pragma solidity ^0.5.17;
 
-import "@openzeppelinV2/contracts/token/ERC20/IERC20.sol";
+/*import "@openzeppelinV2/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelinV2/contracts/math/SafeMath.sol";
 import "@openzeppelinV2/contracts/utils/Address.sol";
 import "@openzeppelinV2/contracts/token/ERC20/SafeERC20.sol";
@@ -11,6 +11,248 @@ import "../../interfaces/uniswap/Uni.sol";
 import "../../interfaces/yearn/IController.sol";
 import "../../interfaces/yearn/Strategy.sol";
 import "../../interfaces/yearn/Vault.sol";
+*/
+
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v2.5.0/contracts/token/ERC20/IERC20.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v2.5.0/contracts/math/SafeMath.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v2.5.0/contracts/utils/Address.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v2.5.0/contracts/token/ERC20/SafeERC20.sol";
+
+interface Uni {
+    function swapExactTokensForTokens(
+        uint256,
+        uint256,
+        address[] calldata,
+        address,
+        uint256
+    ) external;
+}
+
+interface IController {
+    function withdraw(address, uint256) external;
+
+    function balanceOf(address) external view returns (uint256);
+
+    function earn(address, uint256) external;
+
+    function want(address) external view returns (address);
+
+    function rewards() external view returns (address);
+
+    function vaults(address) external view returns (address);
+
+    function strategies(address) external view returns (address);
+}
+
+interface Strategy {
+    function want() external view returns (address);
+
+    function deposit() external;
+
+    // NOTE: must exclude any tokens used in the yield
+    // Controller role - withdraw should return to Controller
+    function withdraw(address) external;
+
+    // Controller | Vault role - withdraw should always return to Vault
+    function withdraw(uint256) external;
+
+    // Controller | Vault role - withdraw should always return to Vault
+    function withdrawAll() external returns (uint256);
+
+    function balanceOf() external view returns (uint256);
+}
+
+interface Vault {
+    function deposit(uint256) external;
+
+    function depositAll() external;
+
+    function withdraw(uint256) external;
+
+    function withdrawAll() external;
+
+    function getPricePerFullShare() external view returns (uint256);
+}
+
+interface GemLike {
+    function approve(address, uint256) external;
+
+    function transfer(address, uint256) external;
+
+    function transferFrom(
+        address,
+        address,
+        uint256
+    ) external;
+
+    function deposit() external payable;
+
+    function withdraw(uint256) external;
+}
+
+interface ManagerLike {
+    function cdpCan(
+        address,
+        uint256,
+        address
+    ) external view returns (uint256);
+
+    function ilks(uint256) external view returns (bytes32);
+
+    function owns(uint256) external view returns (address);
+
+    function urns(uint256) external view returns (address);
+
+    function vat() external view returns (address);
+
+    function open(bytes32, address) external returns (uint256);
+
+    function give(uint256, address) external;
+
+    function cdpAllow(
+        uint256,
+        address,
+        uint256
+    ) external;
+
+    function urnAllow(address, uint256) external;
+
+    function frob(
+        uint256,
+        int256,
+        int256
+    ) external;
+
+    function flux(
+        uint256,
+        address,
+        uint256
+    ) external;
+
+    function move(
+        uint256,
+        address,
+        uint256
+    ) external;
+
+    function exit(
+        address,
+        uint256,
+        address,
+        uint256
+    ) external;
+
+    function quit(uint256, address) external;
+
+    function enter(address, uint256) external;
+
+    function shift(uint256, uint256) external;
+}
+
+interface VatLike {
+    function can(address, address) external view returns (uint256);
+
+    function ilks(bytes32)
+        external
+        view
+        returns (
+            uint256,
+            uint256,
+            uint256,
+            uint256,
+            uint256
+        );
+
+    function dai(address) external view returns (uint256);
+
+    function urns(bytes32, address) external view returns (uint256, uint256);
+
+    function frob(
+        bytes32,
+        address,
+        address,
+        address,
+        int256,
+        int256
+    ) external;
+
+    function hope(address) external;
+
+    function move(
+        address,
+        address,
+        uint256
+    ) external;
+}
+
+interface GemJoinLike {
+    function dec() external returns (uint256);
+
+    function gem() external returns (GemLike);
+
+    function join(address, uint256) external payable;
+
+    function exit(address, uint256) external;
+}
+
+interface GNTJoinLike {
+    function bags(address) external view returns (address);
+
+    function make(address) external returns (address);
+}
+
+interface DaiJoinLike {
+    function vat() external returns (VatLike);
+
+    function dai() external returns (GemLike);
+
+    function join(address, uint256) external payable;
+
+    function exit(address, uint256) external;
+}
+
+interface HopeLike {
+    function hope(address) external;
+
+    function nope(address) external;
+}
+
+interface EndLike {
+    function fix(bytes32) external view returns (uint256);
+
+    function cash(bytes32, uint256) external;
+
+    function free(bytes32) external;
+
+    function pack(uint256) external;
+
+    function skim(bytes32, address) external;
+}
+
+interface JugLike {
+    function drip(bytes32) external returns (uint256);
+}
+
+interface PotLike {
+    function pie(address) external view returns (uint256);
+
+    function drip() external returns (uint256);
+
+    function join(uint256) external;
+
+    function exit(uint256) external;
+}
+
+interface SpotLike {
+    function ilks(bytes32) external view returns (address, uint256);
+}
+
+interface OSMedianizer {
+    function read() external view returns (uint256, bool);
+
+    function foresight() external view returns (uint256, bool);
+}
+
 
 contract StrategyMKRVaultDAIDelegate {
     using SafeERC20 for IERC20;
@@ -30,7 +272,7 @@ contract StrategyMKRVaultDAIDelegate {
     address public jug = address(0x19c0976f590D67707E62397C87829d896Dc0f1F1);
 
     address public eth_price_oracle = address(0xCF63089A8aD2a9D8BD6Bb8022f3190EB7e1eD0f1);
-    address public constant yVaultDAI = address(0xACd43E627e64355f1861cEC6d3a6688B31a6F952);
+    address public constant yVaultDAI = address(0xe0469D912c781e727a365fE89D8BcfF0de654BB7);
 
     address public constant unirouter = address(0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D);
 
