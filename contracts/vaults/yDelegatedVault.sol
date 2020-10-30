@@ -1,6 +1,6 @@
 pragma solidity ^0.5.16;
 
-import "@openzeppelinV2/contracts/token/ERC20/IERC20.sol";
+/*import "@openzeppelinV2/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelinV2/contracts/math/SafeMath.sol";
 import "@openzeppelinV2/contracts/utils/Address.sol";
 import "@openzeppelinV2/contracts/token/ERC20/SafeERC20.sol";
@@ -13,6 +13,74 @@ import "../../interfaces/aave/AaveToken.sol";
 import "../../interfaces/aave/Oracle.sol";
 import "../../interfaces/aave/LendingPoolAddressesProvider.sol";
 import "../../interfaces/yearn/IController.sol";
+*/
+
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v2.5.0/contracts/token/ERC20/IERC20.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v2.5.0/contracts/math/SafeMath.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v2.5.0/contracts/utils/Address.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v2.5.0/contracts/token/ERC20/SafeERC20.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v2.5.0/contracts/token/ERC20/ERC20.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v2.5.0/contracts/token/ERC20/ERC20Detailed.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v2.5.0/contracts/ownership/Ownable.sol";
+
+interface Oracle {
+    function getAssetPrice(address reserve) external view returns (uint);
+    function latestAnswer() external view returns (uint);
+}
+
+interface LendingPoolAddressesProvider {
+    function getLendingPool() external view returns (address);
+    function getLendingPoolCore() external view returns (address);
+    function getPriceOracle() external view returns (address);
+}
+
+interface AaveToken {
+    function underlyingAssetAddress() external view returns (address);
+}
+
+interface Aave {
+    function borrow(address _reserve, uint _amount, uint _interestRateModel, uint16 _referralCode) external;
+    function setUserUseReserveAsCollateral(address _reserve, bool _useAsCollateral) external;
+    function repay(address _reserve, uint _amount, address payable _onBehalfOf) external payable;
+    function getUserAccountData(address _user)
+        external
+        view
+        returns (
+            uint totalLiquidityETH,
+            uint totalCollateralETH,
+            uint totalBorrowsETH,
+            uint totalFeesETH,
+            uint availableBorrowsETH,
+            uint currentLiquidationThreshold,
+            uint ltv,
+            uint healthFactor
+        );
+    function getUserReserveData(address _reserve, address _user)
+        external
+        view
+        returns (
+            uint currentATokenBalance,
+            uint currentBorrowBalance,
+            uint principalBorrowBalance,
+            uint borrowRateMode,
+            uint borrowRate,
+            uint liquidityRate,
+            uint originationFee,
+            uint variableBorrowIndex,
+            uint lastUpdateTimestamp,
+            bool usageAsCollateralEnabled
+        );
+}
+
+interface IController {
+    function withdraw(address, uint) external;
+    function balanceOf(address) external view returns (uint);
+    function earn(address, uint) external;
+    function want(address) external view returns (address);
+    function rewards() external view returns (address);
+    function vaults(address) external view returns (address);
+}
+
 
 contract yDelegatedVault is ERC20, ERC20Detailed {
     using SafeERC20 for IERC20;
