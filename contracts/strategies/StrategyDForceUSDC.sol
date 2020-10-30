@@ -2,7 +2,7 @@
 
 pragma solidity ^0.5.17;
 
-import "@openzeppelinV2/contracts/token/ERC20/IERC20.sol";
+/*import "@openzeppelinV2/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelinV2/contracts/math/SafeMath.sol";
 import "@openzeppelinV2/contracts/utils/Address.sol";
 import "@openzeppelinV2/contracts/token/ERC20/SafeERC20.sol";
@@ -12,6 +12,48 @@ import "../../interfaces/dforce/Token.sol";
 import "../../interfaces/uniswap/Uni.sol";
 
 import "../../interfaces/yearn/IController.sol";
+
+*/
+
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v2.5.0/contracts/token/ERC20/IERC20.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v2.5.0/contracts/math/SafeMath.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v2.5.0/contracts/utils/Address.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v2.5.0/contracts/token/ERC20/SafeERC20.sol";
+
+interface Uni {
+    function swapExactTokensForTokens(
+        uint256,
+        uint256,
+        address[] calldata,
+        address,
+        uint256
+    ) external;
+}
+
+interface dRewards {
+    function withdraw(uint) external;
+    function getReward() external;
+    function stake(uint) external;
+    function balanceOf(address) external view returns (uint);
+    function exit() external;
+}
+
+interface dERC20 {
+  function mint(address, uint256) external;
+  function redeem(address, uint) external;
+  function getTokenBalance(address) external view returns (uint);
+  function getExchangeRate() external view returns (uint);
+}
+
+interface IController {
+    function withdraw(address, uint) external;
+    function balanceOf(address) external view returns (uint);
+    function earn(address, uint) external;
+    function want(address) external view returns (address);
+    function rewards() external view returns (address);
+    function vaults(address) external view returns (address);
+}
+
 
 contract StrategyDForceUSDC {
     using SafeERC20 for IERC20;
